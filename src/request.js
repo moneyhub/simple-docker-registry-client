@@ -14,9 +14,13 @@ function tryJSON(input, url = '') {
 }
 
 async function getToken(challenge, creds) {
+  const auth = creds != null
+    ? basicAuth(creds.username, creds.password)
+    : undefined
+
   const res = await fetch(`${challenge.parms.realm}?service=${challenge.parms.service}&scope=${challenge.parms.scope}`, {
     headers: {
-      'Authorization': basicAuth(creds.username, creds.password),
+      'Authorization': auth,
     },
   })
 
@@ -48,10 +52,6 @@ async function registryRequest(endpoint, opts) {
     if (authChallenge.scheme === 'Basic') {
       throw new Error('Invalid authentication')
     } else if (authChallenge.scheme === 'Bearer') {
-      if (!creds) {
-        throw new Error('No credentials provided but are required by the registry')
-      }
-
       const token = await getToken(authChallenge, creds)
 
       res = await fetch(url, {
