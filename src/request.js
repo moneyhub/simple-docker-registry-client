@@ -1,5 +1,17 @@
 import fetch from 'node-fetch'
+import https from 'https'
 import parsers from 'www-authenticate/lib/parsers'
+
+function req(url, opts) {
+  const agent = new https.Agent({
+    rejectUnauthorized: opts.allowUnauthorized !== true,
+  })
+
+  return fetch(url, {
+    ...opts,
+    agent,
+  })
+}
 
 function basicAuth(username, password) {
   return `Basic ${new Buffer(`${username}:${password}`).toString('base64')}`
@@ -13,15 +25,16 @@ function tryJSON(input, url = '') {
   }
 }
 
-async function getToken(challenge, creds) {
+async function getToken(challenge, creds, opts) {
   const auth = creds != null
     ? basicAuth(creds.username, creds.password)
     : undefined
 
-  const res = await fetch(`${challenge.parms.realm}?service=${challenge.parms.service}&scope=${challenge.parms.scope}`, {
+  const res = await req(`${challenge.parms.realm}?service=${challenge.parms.service}&scope=${challenge.parms.scope}`, {
     headers: {
       'Authorization': auth,
     },
+    allowUnauthorized: opts.allowUnauthorized,
   })
 
   if (res.status === 401) {
@@ -39,11 +52,11 @@ async function registryRequest(endpoint, opts) {
     ? basicAuth(creds.username, creds.password)
     : undefined
 
-  let res = await fetch(url, {
+  let res = await req(url, {
     headers: {
       'Authorization': initialAuth,
-      'Content-Type': 'application/vnd.docker.distribution.manifest.list.v2+json',
     },
+    allowUnauthorized: opts.allowUnauthorized,
   })
 
   if (res.status === 401) {
@@ -52,13 +65,13 @@ async function registryRequest(endpoint, opts) {
     if (authChallenge.scheme === 'Basic') {
       throw new Error('Invalid authentication')
     } else if (authChallenge.scheme === 'Bearer') {
-      const token = await getToken(authChallenge, creds)
+      const token = await getToken(authChallenge, creds, opts)
 
-      res = await fetch(url, {
+      res = await req(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/vnd.docker.distribution.manifest.list.v2+json',
         },
+        allowUnauthorized: opts.allowUnauthorized,
       })
 
       if (res.status === 401) {
