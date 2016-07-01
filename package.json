@@ -1,0 +1,44 @@
+{
+  "name": "simple-docker-registry-client",
+  "version": "1.0.0",
+  "description": "A simple docker registry client for Node",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib --copy-files",
+    "watch": "babel src --out-dir lib -w --copy-files",
+    "test": "eslint .",
+    "prepublish": "npm run test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/momentumft/simple-docker-registry-client.git"
+  },
+  "keywords": [
+    "docker",
+    "registry",
+    "client"
+  ],
+  "author": "Momentum Financial Technology Ltd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/momentumft/simple-docker-registry-client/issues"
+  },
+  "homepage": "https://github.com/momentumft/simple-docker-registry-client#readme",
+  "dependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-runtime": "^6.9.2",
+    "node-fetch": "^1.5.3",
+    "www-authenticate": "^0.6.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.7.5",
+    "babel-eslint": "^6.0.2",
+    "babel-plugin-transform-runtime": "^6.7.5",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^2.7.0",
+    "eslint-config-standard": "^5.1.0",
+    "eslint-plugin-promise": "^1.1.0",
+    "eslint-plugin-standard": "^1.3.2"
+  }
+}
