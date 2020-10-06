@@ -14,7 +14,7 @@ function req(url, opts) {
 }
 
 function basicAuth(username, password) {
-  return `Basic ${new Buffer(`${username}:${password}`).toString('base64')}`
+  return `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
 }
 
 function tryJSON(input, url = '') {
