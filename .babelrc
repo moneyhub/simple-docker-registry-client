@@ -1,4 +1,4 @@
 {
-  "presets": ["es2015", "stage-0"],
-  "plugins": ["transform-runtime"]
+  "presets": [["@babel/preset-env", {"targets": {"node": "8"}}]],
+  "plugins": ["@babel/plugin-transform-runtime"]
 }
