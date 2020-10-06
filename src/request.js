@@ -60,7 +60,7 @@ async function registryRequest(endpoint, opts) {
   })
 
   if (res.status === 401) {
-    const authChallenge = new parsers.WWW_Authenticate(res.headers.get('WWW-Authenticate'))
+    const authChallenge = new parsers.WWW_Authenticate(res.headers.get('WWW-Authenticate').split(',')[0])
 
     if (authChallenge.scheme === 'Basic') {
       throw new Error('Invalid authentication')
@@ -82,13 +82,13 @@ async function registryRequest(endpoint, opts) {
 
   if (res.status === 404) {
     const err = {
-      body: tryJSON(await res.text(), url),
+      body: tryJSON(await res.textConverted(), url),
     }
 
     throw err
   }
 
-  return tryJSON(await res.text(), url)
+  return tryJSON(await res.textConverted(), url)
 }
 
 export {registryRequest}
