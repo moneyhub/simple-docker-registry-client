@@ -1,6 +1,6 @@
 {
   "name": "simple-docker-registry-client",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A simple docker registry client for Node",
   "main": "lib/index.js",
   "scripts": {
