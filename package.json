@@ -26,7 +26,7 @@
   "homepage": "https://github.com/momentumft/simple-docker-registry-client#readme",
   "dependencies": {
     "babel-runtime": "^6.9.2",
-    "node-fetch": "^1.5.3",
+    "node-fetch": "^2.6.1",
     "www-authenticate": "^0.6.2"
   },
   "devDependencies": {
